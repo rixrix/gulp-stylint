@@ -1,0 +1,31 @@
+{
+  "name": "gulp-stylint",
+  "version": "0.0.1",
+  "description": "Gulp plugin for Stylus lint library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'x'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rixrix/gulp-stylint"
+  },
+  "keywords": [
+    "stylus",
+    "lint",
+    "css"
+  ],
+  "author": "Richard Sentino",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rixrix/gulp-stylint/issues"
+  },
+  "homepage": "https://github.com/rixrix/gulp-stylint",
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "map-stream": "0.0.5",
+    "shelljs": "^0.3.0",
+    "stylint": "^0.8.15",
+    "through": "^2.3.6"
+  }
+}
