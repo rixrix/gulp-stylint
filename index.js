@@ -1,10 +1,9 @@
 "use strict";
 
-//var stylint = require('stylint');
 var through = require('through');
 var gulpUtil = require('gulp-util');
 var pluginError = gulpUtil.PluginError;
-var shell = require('shelljs');
+var process = require('child_process');
 var map = require('map-stream');
 
 var stylinPlugin = function(pluginOptions) {
@@ -13,8 +12,30 @@ var stylinPlugin = function(pluginOptions) {
         pluginOptions = {};
     }
     return map(function(file, cb){
-        var cmd = 'stylint ' + file.history + ' -c ' + pluginOptions.configuration;
-        shell.exec(cmd).output;
+        // FIXME why `history` ???
+        var cmdArguments = [file.history];
+
+        if (file.isStream()) {
+            return cb(new pluginError('gulp-stylint', 'Streaming not support'));
+        }
+
+        if (pluginOptions.configuration) {
+            cmdArguments.push(' -c ' + pluginOptions.configuration);
+        }
+
+        var linter = process.spawn('stylint', cmdArguments);
+
+        linter.stdout.on('data', function(data){
+            console.log('[warning] gulp-stylint', data.toString());
+        });
+
+        linter.stderr.on('data', function(data) {
+            console.log('[error] gulp-stylint', data.toString());
+        });
+
+        linter.on('close', function(exitCode) {
+            cb();
+        });
     });
 };
 
